@@ -5,24 +5,28 @@ from __future__ import unicode_literals
 import re
 
 from django.db import migrations
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def alter_title(apps, schema_editor):
     Category = apps.get_model('blog', 'Category')
 
-    blog_tutorial = Category.objects.get(slug='django-blog-tutorial')
-    auth_example = Category.objects.get(slug='django-auth-example')
+    try:
+        blog_tutorial = Category.objects.get(slug='django-blog-tutorial')
+        auth_example = Category.objects.get(slug='django-auth-example')
 
-    blog_tutorial_posts = blog_tutorial.post_set.all()
-    auth_example_posts = auth_example.post_set.all()
+        blog_tutorial_posts = blog_tutorial.post_set.all()
+        auth_example_posts = auth_example.post_set.all()
 
-    for post in blog_tutorial_posts:
-        post.title = re.sub(r'Django\s博客教程：|\d{1,2}\s-\s', '', post.title)
-        post.save()
+        for post in blog_tutorial_posts:
+            post.title = re.sub(r'Django\s博客教程：|\d{1,2}\s-\s', '', post.title)
+            post.save()
 
-    for post in auth_example_posts:
-        post.title = re.sub(r'Django\s用户认证系统：\s*', '', post.title)
-        post.save()
+        for post in auth_example_posts:
+            post.title = re.sub(r'Django\s用户认证系统：\s*', '', post.title)
+            post.save()
+    except ObjectDoesNotExist:
+        pass
 
 
 class Migration(migrations.Migration):

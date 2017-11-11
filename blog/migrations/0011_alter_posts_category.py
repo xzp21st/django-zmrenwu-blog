@@ -3,15 +3,19 @@
 from __future__ import unicode_literals
 
 from django.db import migrations
+from django.core.exceptions import ObjectDoesNotExist
 
 
 def alter_posts_category(apps, schema_editor):
     Category = apps.get_model('blog', 'Category')
 
-    basic = Category.objects.get(slug='django-blog-tutorial')
-    advanced = Category.objects.get(slug='django-advanced-blog-tutorial')
-    posts = advanced.post_set.all()
-    posts.update(category_id=basic.id)
+    try:
+        basic = Category.objects.get(slug='django-blog-tutorial')
+        advanced = Category.objects.get(slug='django-advanced-blog-tutorial')
+        posts = advanced.post_set.all()
+        posts.update(category_id=basic.id)
+    except ObjectDoesNotExist:
+        pass
 
 
 class Migration(migrations.Migration):

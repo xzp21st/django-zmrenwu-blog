@@ -13,6 +13,7 @@ MIDDLEWARE += [
 
 INSTALLED_APPS += [
     'debug_toolbar',
+    'sslserver',
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'

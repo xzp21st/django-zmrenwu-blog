@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.weibo',
     'allauth.socialaccount.providers.github',
     'django_comments',
-    'sslserver',
     'notifications',
     'blog',
     'users',

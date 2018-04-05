@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load comments %}
+{% load comments static %}
 {% block sidebar_trigger %}
   <a class="show-on-mobile nav-link m-5" id="js-sidebar-btn" href="#" role="button">
     <i class="fa fa-chevron-right" aria-hidden="true"></i>
@@ -11,6 +11,18 @@
     <div class="scroll-view bg-white card toc-sidebar" style="height: 100%">
       <div class="card-header">
         目录
+      </div>
+      <div class="flex-left">
+        <div class="unit-1-4">
+          <a href="https://promotion.aliyun.com/ntms/act/group/team.html?group=FcfAncJPAp" target="_blank"><img
+              src="{% static 'blog/images/aliyun.jpg' %}" alt=""></a>
+        </div>
+        <div class="unit-1-2 flex-vertical top-gap text-small">
+          <a style="color: #e83e8c" target="_blank"
+             href="https://promotion.aliyun.com/ntms/act/group/team.html?group=FcfAncJPAp">云服务器新用户</a>
+          <a style="color: #6610f2" target="_blank"
+             href="https://promotion.aliyun.com/ntms/act/group/team.html?group=FcfAncJPAp">8元/月</a>
+        </div>
       </div>
       <div class="card-body">
         <ul>

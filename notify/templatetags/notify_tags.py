@@ -6,7 +6,7 @@ register = template.Library()
 
 
 @register.simple_tag
-def display(obj):
+def display(obj, request=None):
     tpl = getattr(settings, 'NOTIFICATION_TEMPLATES').get(obj.verb)
 
     if not tpl:
@@ -16,5 +16,6 @@ def display(obj):
         'notification': obj,
         'actor': obj.actor,
         'target': obj.target,
+        'request': request,
     }
     return render_to_string(tpl, context=context)

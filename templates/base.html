@@ -174,9 +174,9 @@
                     <ul>
                       {% for m in medium.list %}
                         {% if m.flag == 0 %}
-                          {{ m.identifier }}
+                          <li>{{ m.identifier }}</li>
                         {% elif m.flag == 1 %}
-                          <a target="_blank" href="{{ m.identifier }}">{{ m.name }}</a>
+                          <li><a target="_blank" href="{{ m.identifier }}">{{ m.name }}</a></li>
                         {% endif %}
                       {% endfor %}
                     </ul>

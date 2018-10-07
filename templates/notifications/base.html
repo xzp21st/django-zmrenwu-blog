@@ -10,7 +10,7 @@
         <time>{{ notification.timestamp|timesince }}前</time>
         {% if notification.unread %}
           <a class="text-small text-muted mark-as-read"
-             href="{% url 'notifications:mark_as_read' notification.slug %}?next={{ request.path }}"><i
+             href="{% url 'notifications:mark_as_read' notification.slug %}?next={{ request.path }}?{{ request.META.QUERY_STRING }}"><i
               class="fa fa-check"
               aria-hidden="true"></i>
             标为已读</a>

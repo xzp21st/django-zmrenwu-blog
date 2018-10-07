@@ -161,51 +161,75 @@
          style="margin-top: 60px">
       {% block main %}{% endblock main %}
       {% block side %}
-        <aside class="unit-1-4 unit-1-on-mobile top-gap">
-          <section class="bg-white card">
-            <div class="card-header">
-              Django学习小组 QQ 群
-            </div>
-            <ul>
-              <li>696899473</li>
-            </ul>
-          </section>
+        <aside class="unit-1-4 unit-1-on-mobile">
+          {% get_mediums as mediums %}
+          {% if mediums %}
+            {% regroup mediums by get_flag_display as grouped_mediums %}
+            <section class="bg-white">
+              <h6 style="padding-left: 10px">交流学习</h6>
+              {% for medium in grouped_mediums %}
+                <ul class="">
+                  <li>
+                    {{ medium.grouper }}
+                    <ul>
+                      {% for m in medium.list %}
+                        {% if m.flag == 0 %}
+                          {{ m.identifier }}
+                        {% elif m.flag == 1 %}
+                          <a target="_blank" href="{{ m.identifier }}">{{ m.name }}</a>
+                        {% endif %}
+                      {% endfor %}
+                    </ul>
+                  </li>
+                </ul>
+              {% endfor %}
+            </section>
+          {% endif %}
 
-          <section class="bg-white top-gap card">
-            <div class="card-header">
-              友情链接
-              <ul>
-                <li><a class="text-muted" target="_blank"
-                       href="http://www.dj-china.cn/">Django中文社区</a>
-                </li>
-                <li><a class="text-muted" target="_blank"
-                       href="http://www.pythonzh.cn/">Python中文社区</a>
-                </li>
-                <li><a class="text-muted" target="_blank"
-                       href="http://www.paurl.com/">互联网运营</a>
-                </li>
-              </ul>
-            </div>
-          </section>
 
-          <section class="bg-white top-gap card">
-            <div class="card-header">
-              最新福利
-              <div class="flex-left">
-                <div class="unit-1-2">
-                  <a href="https://cloud.tencent.com/developer/support-plan?invite_code=12mxiar4qzhkl"
-                     target="_blank"><img
-                      src="{% static 'blog/images/tencentcloud.jpg' %}" alt=""></a>
-                </div>
-                <div class="unit-1-2 flex-vertical top-gap">
-                  <div><a class="text-small" style="color: #6610f2" target="_blank"
-                          href="https://cloud.tencent.com/developer/support-plan?invite_code=12mxiar4qzhkl">开通腾讯云+社区专栏，得<span
-                      style="color: red">180元</span>腾讯云服务器代金券</a>
-                  </div>
-                </div>
+          {% get_friendlinks as link_list %}
+          {% if link_list %}
+            <section class="bg-white top-gap card">
+
+              <div class="card-header">
+                友情链接
+                <ul>
+                  {% for link in link_list %}
+                    <li><a class="text-muted" target="_blank"
+                           href="{{ link.site_domain }}">{{ link.site_name }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
               </div>
-            </div>
-          </section>
+            </section>
+          {% endif %}
+
+          {% get_recommendations as recommendations %}
+          {% if recommendations %}
+            <section class="bg-white top-gap card">
+
+              <div class="card-header">
+                最新福利
+                {% for rec in recommendations %}
+                  <div class="flex-left">
+                    <div class="unit-1-2">
+                      <a href="{{ rec.url }}"
+                         target="_blank"><img
+                          src="{{ rec.pic_thumbnail.url }}" alt=""></a>
+                    </div>
+                    <div class="unit-1-2 flex-vertical top-gap">
+                      <div>
+                        <a class="text-small" style="color: #6610f2" target="_blank" href="{{ rec.url }}">
+                          {{ rec.description | linebreaksbr |safe }}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </section>
+          {% endif %}
+
           <section class="bg-white top-gap card">
             <div class="card-header">
               推广
@@ -221,7 +245,7 @@
 </section>
 <footer class="bg-white py-5 mt-5 text-small text-muted">
   <div class="flex-center">
-    <div>&copy; 2017 追梦人物的博客</div>
+    <div>&copy; 2018 追梦人物的博客</div>
   </div>
   {#  <div class="flex-center">#}
   {#    <div>浙ICP备 15005796号-2</div>#}

@@ -1,5 +1,6 @@
 import os
 
+import markdown
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericRelation
 from django.db import models
@@ -8,13 +9,13 @@ from django.urls import reverse
 from django.utils.html import strip_tags
 from django.utils.six import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
-
-import markdown
-from comments.models import BlogComment
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from model_utils import Choices
 from model_utils.fields import AutoCreatedField, AutoLastModifiedField
+from model_utils.models import TimeStampedModel
+
+from comments.models import BlogComment
 
 
 class Tag(models.Model):
@@ -155,3 +156,40 @@ class Post(models.Model):
 
     def participants_count(self):
         return self.comments.values_list('user_id', flat=True).distinct().count()
+
+
+class Medium(TimeStampedModel):
+    FLAG_CHOICES = (
+        (0, 'QQ 群'),
+        (1, '知乎专栏'),
+    )
+    flag = models.SmallIntegerField(choices=FLAG_CHOICES)
+    name = models.CharField(max_length=200)
+    identifier = models.CharField(max_length=300)
+
+    class Meta:
+        ordering = ['flag', 'name']
+
+    def __str__(self):
+        return '{}: {}/{}'.format(self.flag, self.name, self.identifier)
+
+
+class FriendLink(TimeStampedModel):
+    site_name = models.CharField(max_length=100)
+    site_domain = models.URLField()
+
+    def __str__(self):
+        return self.site_name
+
+
+class Recommendation(TimeStampedModel):
+    pic = models.ImageField(upload_to='recommendation/', blank=True)
+    pic_thumbnail = ImageSpecField(source='pic',
+                                   processors=[ResizeToFill(100, 100)],
+                                   format='JPEG',
+                                   options={'quality': 80})
+    url = models.URLField(blank=True)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.description[:50]

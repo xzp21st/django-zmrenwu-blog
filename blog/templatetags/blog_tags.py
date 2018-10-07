@@ -1,7 +1,7 @@
 from django import template
 from django.utils.html import mark_safe
 
-from ..models import Post
+from ..models import Post, Medium, FriendLink, Recommendation
 
 register = template.Library()
 
@@ -9,6 +9,21 @@ register = template.Library()
 @register.simple_tag
 def get_recent_posts(num=10):
     return Post.objects.exclude(category__genre=2).order_by('-views')[:num]
+
+
+@register.simple_tag
+def get_mediums():
+    return Medium.objects.all()
+
+
+@register.simple_tag
+def get_friendlinks():
+    return FriendLink.objects.all()
+
+
+@register.simple_tag
+def get_recommendations():
+    return Recommendation.objects.all()
 
 
 @register.simple_tag
